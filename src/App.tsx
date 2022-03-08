@@ -1,17 +1,69 @@
-import React from 'react';
-import { GlobalStyles } from './styles/GlobalStyles';
+import React, { useState } from 'react';
+import { GlobalStyles, CenterAlign } from './styles/GlobalStyles';
+import { AiOutlineDownload } from 'react-icons/ai';
+import { Bar, Doughnut } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
 const App = () => {
+  const [chartData, setChartData] = useState({});
+
+  const data = {
+    labels: ['Red', 'Green', 'Yellow'],
+    datasets: [
+      {
+        data: [300, 50, 100],
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+      },
+    ],
+  };
+
+  function download() {
+    console.log('test download');
+  }
+
   return (
     <React.Fragment>
       <GlobalStyles />
-      <div style={{ textAlign: 'center' }}>
-        <h1>Hello world!</h1>
-        <a className='link' href=''>
-          VRST Boilerplate
-        </a>
-        <p>(Vite.js, React.js, Styled-Components, and Typescript)</p>
-      </div>
+      <CenterAlign>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <h1>
+            GitHub Stats{' '}
+            <AiOutlineDownload
+              onClick={download}
+              style={{ verticalAlign: 'bottom' }}
+            />
+          </h1>
+        </div>
+        <br />
+        <div className='chart'>
+          <Doughnut
+            options={{
+              responsive: true,
+              maintainAspectRatio: true,
+            }}
+            data={data}
+          />
+        </div>
+      </CenterAlign>
     </React.Fragment>
   );
 };
