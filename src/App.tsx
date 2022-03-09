@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GlobalStyles, CenterAlign } from './styles/GlobalStyles';
 import { AiOutlineDownload } from 'react-icons/ai';
 import { Bar, Doughnut } from 'react-chartjs-2';
@@ -12,6 +12,8 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import axios from 'axios';
+import { getData } from './util/util';
 
 ChartJS.register(
   ArcElement,
@@ -25,6 +27,10 @@ ChartJS.register(
 
 const App = () => {
   const [chartData, setChartData] = useState({});
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const data = {
     labels: ['Red', 'Green', 'Yellow'],
