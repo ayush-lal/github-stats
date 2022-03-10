@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { GlobalStyles, CenterAlign } from './styles/GlobalStyles';
 import { AiOutlineDownload } from 'react-icons/ai';
 import { Bar, Doughnut } from 'react-chartjs-2';
@@ -26,17 +26,33 @@ ChartJS.register(
 );
 
 const App = () => {
-  const [chartData, setChartData] = useState({});
+  const [chartData, setChartData] = useState<any>();
+  const chartRef = useRef(null);
 
   useEffect(() => {
-    getData();
+    (async () => {
+      setChartData(await getData());
+    })();
   }, []);
 
+  if (chartData) {
+    // console.log(chartData);
+    chartData.map(({ value }: any) => console.log(value));
+  }
+
   const data = {
-    labels: ['Red', 'Green', 'Yellow'],
+    labels: chartData
+      ? chartData.map(({ label }: any) => {
+          return label;
+        })
+      : null,
     datasets: [
       {
-        data: [300, 50, 100],
+        data: chartData
+          ? chartData.map(({ value }: any) => {
+              return value;
+            })
+          : null,
         backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
       },
     ],
@@ -44,6 +60,8 @@ const App = () => {
 
   function download() {
     console.log('test download');
+    // const base64Image = chartRef.toBase64Image();
+    // console.log(base64Image);
   }
 
   return (
@@ -62,13 +80,27 @@ const App = () => {
         <br />
         <div className='chart'>
           <Doughnut
+            ref={chartRef}
+            style={{ width: 500 }}
             options={{
               responsive: true,
               maintainAspectRatio: true,
+              animation: {
+                onComplete: function () {
+                  document
+                    .getElementById('test')
+                    ?.setAttribute('href', this.toBase64Image());
+                  // console.log(this.toBase64Image());
+                },
+              },
             }}
             data={data}
           />
         </div>
+        <a id='test' href='https://www.google.com'>
+          test
+        </a>
+        {/* <img src='' id='test' alt=''></img> */}
       </CenterAlign>
     </React.Fragment>
   );
