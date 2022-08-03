@@ -9,7 +9,6 @@ export const GlobalStyles = createGlobalStyle`
     width: 100%;
   }
 
-  // Scrollbar styles 
   html {
     scrollbar-width: thin;
     scrollbar-color: var(--black);
@@ -30,6 +29,11 @@ export const GlobalStyles = createGlobalStyle`
     background-color: var(--white);
     color: var(--black);
     max-width: var(--max-width);
+    background-color: #22272E;
+  }
+
+  p, h1 {
+    color: #ADBAC7
   }
 `;
 
@@ -38,6 +42,10 @@ export const CenterAlign = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  /* text-align: center; */
   min-height: 100vh;
+`;
+
+export const StatsWrapper = styled.div`
+  padding: 2rem;
+  border-radius: 10px;
 `;

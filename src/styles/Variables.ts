@@ -22,6 +22,8 @@ const Variables = css`
     --gray: #7f7f7f;
     --blue: #057dcd;
 
+    --bg: '#22272E';
+
     // Other
     --max-width: 1500px;
     --transition: all 0.25s ease-in-out;
