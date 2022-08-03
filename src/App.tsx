@@ -1,19 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { GlobalStyles, CenterAlign } from './styles/GlobalStyles';
-import { AiOutlineDownload } from 'react-icons/ai';
-import { Bar, Doughnut } from 'react-chartjs-2';
 import {
-  Chart as ChartJS,
   ArcElement,
-  CategoryScale,
-  LinearScale,
   BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
   Title,
   Tooltip,
-  Legend,
 } from 'chart.js';
-import axios from 'axios';
-import { getData } from './util/util';
+import React, { useEffect, useRef, useState } from 'react';
+import { Doughnut } from 'react-chartjs-2';
+import { CenterAlign, GlobalStyles, StatsWrapper } from './styles/GlobalStyles';
+import { colours, getData } from './util/util';
 
 ChartJS.register(
   ArcElement,
@@ -27,7 +25,7 @@ ChartJS.register(
 
 const App = () => {
   const [chartData, setChartData] = useState<any>();
-  const chartRef = useRef(null);
+  const chartRef = useRef();
 
   useEffect(() => {
     (async () => {
@@ -35,74 +33,88 @@ const App = () => {
     })();
   }, []);
 
-  if (chartData) {
-    // console.log(chartData);
-    chartData.map(({ value }: any) => console.log(value));
-  }
-
   const data = {
-    labels: chartData
-      ? chartData.map(({ label }: any) => {
-          return label;
-        })
-      : null,
+    labels:
+      chartData &&
+      chartData.map(({ label }: any) => {
+        return label;
+      }),
     datasets: [
       {
-        data: chartData
-          ? chartData.map(({ value }: any) => {
-              return value;
-            })
-          : null,
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+        data:
+          chartData &&
+          chartData.map(({ value }: any) => {
+            return value;
+          }),
+        backgroundColor: colours,
       },
     ],
   };
 
-  function download() {
-    console.log('test download');
-    // const base64Image = chartRef.toBase64Image();
-    // console.log(base64Image);
-  }
+  const plugin = {
+    id: 'custom_canvas_background_color',
+    beforeDraw: (chartCtx: any) => {
+      const ctx = chartCtx.canvas.getContext('2d');
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-over';
+      ctx.fillStyle = '#22272E';
+      ctx.fillRect(0, 0, 1000, 1000);
+      ctx.borderRadius = 20;
+      // ctx.fillRect(0, 0, chartCtx.width, chartCtx.height);
+      ctx.restore();
+    },
+    legend: {
+      labels: {
+        color: 'red',
+      },
+    },
+  };
 
   return (
-    <React.Fragment>
+    <>
       <GlobalStyles />
       <CenterAlign>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <h1>
-            GitHub Stats{' '}
-            <AiOutlineDownload
-              onClick={download}
-              style={{ verticalAlign: 'bottom' }}
-            />
-          </h1>
-        </div>
-        <br />
+        <h1>GitHub Stats</h1>
         <div className='chart'>
-          <Doughnut
-            ref={chartRef}
-            style={{ width: 500 }}
-            options={{
-              responsive: true,
-              maintainAspectRatio: true,
-              animation: {
-                onComplete: function () {
-                  document
-                    .getElementById('test')
-                    ?.setAttribute('href', this.toBase64Image());
-                  // console.log(this.toBase64Image());
-                },
-              },
-            }}
-            data={data}
-          />
+          {!chartData ? (
+            <p>Loading...</p>
+          ) : (
+            <StatsWrapper>
+              <Doughnut
+                ref={chartRef}
+                plugins={[plugin]}
+                style={{ width: 550 }}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: true,
+                  layout: {
+                    padding: 20,
+                  },
+                  plugins: {
+                    legend: {
+                      labels: {
+                        color: '#ADBAC7',
+                      },
+                    },
+                  },
+                  animation: {
+                    onComplete: function () {
+                      document
+                        .getElementById('download')
+                        ?.setAttribute('href', this.toBase64Image());
+                    },
+                  },
+                }}
+                data={data}
+              />
+            </StatsWrapper>
+          )}
         </div>
-        <a id='test' href='https://www.google.com'>
-          test
+        <a style={{ display: 'none' }} id='download' href=''>
+          Download
         </a>
-        {/* <img src='' id='test' alt=''></img> */}
       </CenterAlign>
-    </React.Fragment>
+    </>
   );
 };
 
