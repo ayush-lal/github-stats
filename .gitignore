@@ -6,3 +6,4 @@ dist-ssr
 python
 .env.development
 .env.production
+docker-app
