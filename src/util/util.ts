@@ -4,7 +4,7 @@ export async function getData() {
   try {
     const {data} = await axios.get('https://ayush-adhoc-api.up.railway.app/GetRepoLanguageStatistics')
 
-    const flattenedAndReduced = data.reduce((prev, current) => {
+    const flattenedAndReduced = data.reduce((prev: any, current: any) => {
       Object.keys(prev).forEach(key => {
         if (current[key]) {
           prev[key] += current[key];
