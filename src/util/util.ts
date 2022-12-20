@@ -2,20 +2,9 @@ import axios from 'axios';
 
 export async function getData() {
   try {
-    const { data } = await axios.get(
-      'https://api.github.com/users/ayush-lal/repos',
-      {
-        headers: {
-          Authorization: `${import.meta.env.VITE_GH_APIKEY}`,
-        },
-      },
-    );
+    const {data} = await axios.get('http://localhost:8000/GetRepoLanguageStatistics')
 
-    const response = data.map((i: any) => i.languages_url);
-
-    const repoLanguage = await getRepoLanguage(response);
-
-    const flattenedAndReduced = repoLanguage.reduce((prev, current) => {
+    const flattenedAndReduced = data.reduce((prev, current) => {
       Object.keys(prev).forEach(key => {
         if (current[key]) {
           prev[key] += current[key];
