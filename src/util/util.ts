@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function getData() {
   try {
-    const {data} = await axios.get('http://localhost:8000/GetRepoLanguageStatistics')
+    const {data} = await axios.get('https://ayush-adhoc-api.up.railway.app/GetRepoLanguageStatistics')
 
     const flattenedAndReduced = data.reduce((prev, current) => {
       Object.keys(prev).forEach(key => {
