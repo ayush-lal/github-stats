@@ -34,19 +34,16 @@ const App = () => {
   }, []);
 
   const data = {
-    labels:
-      chartData &&
-      chartData.map(({ label }: any) => {
+    labels: chartData?.map(({ label }: any) => {
         return label;
       }),
     datasets: [
       {
-        data:
-          chartData &&
-          chartData.map(({ value }: any) => {
+        data: chartData?.map(({ value }: any) => {
             return value;
           }),
         backgroundColor: colours,
+        borderWidth: 0,
       },
     ],
   };
