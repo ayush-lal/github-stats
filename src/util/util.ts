@@ -24,7 +24,7 @@ export async function getData() {
     );
 
     let filteredArray = flattenedAndReducedToArray.filter((i: any) => {
-      var excludedLanguages = ['Hack', 'Shell', 'Batchfile', 'Dockerfile']
+      var excludedLanguages = ['Hack', 'Shell', 'Batchfile', 'Dockerfile', 'Procfile']
       return !excludedLanguages.includes(Object.keys(i)[0]);
     })
 
