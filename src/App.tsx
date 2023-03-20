@@ -60,7 +60,6 @@ const App = () => {
       ctx.fillStyle = '#22272E';
       ctx.fillRect(0, 0, 1000, 1000);
       ctx.borderRadius = 20;
-      // ctx.fillRect(0, 0, chartCtx.width, chartCtx.height);
       ctx.restore();
     },
     legend: {

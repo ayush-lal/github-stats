@@ -17,13 +17,22 @@ export async function getData() {
       return { ...prev };
     });
 
-    const flattenedAndReducedToArray = Object.keys(flattenedAndReduced).map(
+    let flattenedAndReducedToArray = Object.keys(flattenedAndReduced).map(
       key => ({
         [key]: flattenedAndReduced[key],
       }),
     );
 
-    return flattenedAndReducedToArray.map((i: any) => {
+    let filteredArray = flattenedAndReducedToArray.filter((i: any) => {
+      var excludedLanguages = ['Hack', 'Shell', 'Batchfile', 'Dockerfile']
+      return !excludedLanguages.includes(Object.keys(i)[0]);
+    })
+
+    filteredArray.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
+      return b[Object.keys(b)[0]] - a[Object.keys(a)[0]];
+    })
+
+    return filteredArray.map((i: any) => {
       return {
         label: Object.keys(i)[0],
         value: i[Object.keys(i)[0]],
@@ -50,24 +59,27 @@ async function getRepoLanguage(array: string[]) {
 }
 
 export const colours = [
-  '#a5c9ff',
-  '#f8b380',
-  '#d692ce',
-  '#b7fcae',
-  '#8efabb',
-  '#808de6',
-  '#f895bf',
-  '#9caac8',
-  '#9bddff',
-  '#8cc69e',
-  '#a195aa',
-  '#93fffd',
-  '#e3d5dd',
-  '#ff8cf0',
-  '#cff280',
-  '#87adc0',
-  '#899880',
-  '#f7fd80',
-  '#eca087',
-  '#b78aff',
+  '#FF0000',
+  '#FFA500',
+  '#ffff00',
+  '#00FF00',
+  '#008000',
+  '#87CEEB',
+  '#4169e1',
+  '#ee82ee',
+  '#ffc0cb',
+  '#a52a2a',
+  '#808080',
+  '#FF6666',
+  '#FFC966',
+  '#FFFF7F',
+  '#99FF99',
+  '#7FBF7F',
+  '#B7E1F3',
+  '#A0B4F0',
+  '#F6C0F6',
+  '#FFDFE5',
+  '#C97F7F',
+  '#BFBFBF',
+  '#000000'
 ];
