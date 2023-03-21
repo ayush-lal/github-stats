@@ -54,7 +54,7 @@ const App = () => {
       const ctx = chartCtx.canvas.getContext('2d');
       ctx.save();
       ctx.globalCompositeOperation = 'destination-over';
-      ctx.fillStyle = '#22272E';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0)';
       ctx.fillRect(0, 0, 1000, 1000);
       ctx.borderRadius = 20;
       ctx.restore();
@@ -97,11 +97,7 @@ const App = () => {
                     onComplete: function () {
                       document
                         .getElementById('download')
-                        ?.setAttribute(
-                          'href',
-                          this.toBase64Image('image/png', 1),
-                        );
-                      // ?.setAttribute('href', this.toBase64Image());
+                        ?.setAttribute('href', this.toBase64Image());
                     },
                   },
                 }}
