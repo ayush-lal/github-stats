@@ -35,13 +35,13 @@ const App = () => {
 
   const data = {
     labels: chartData?.map(({ label }: any) => {
-        return label;
-      }),
+      return label;
+    }),
     datasets: [
       {
         data: chartData?.map(({ value }: any) => {
-            return value;
-          }),
+          return value;
+        }),
         backgroundColor: colours,
         borderWidth: 0,
       },
@@ -97,7 +97,11 @@ const App = () => {
                     onComplete: function () {
                       document
                         .getElementById('download')
-                        ?.setAttribute('href', this.toBase64Image());
+                        ?.setAttribute(
+                          'href',
+                          this.toBase64Image('image/png', 1),
+                        );
+                      // ?.setAttribute('href', this.toBase64Image());
                     },
                   },
                 }}
